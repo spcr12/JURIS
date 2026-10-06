@@ -4,128 +4,417 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CEJ - Expediente Judicial Electrónico | Poder Judicial del Perú</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter & Merriweather -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- CSS Puro Embebido (Garantiza 100% de compatibilidad sin depender de CDNs) -->
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    .font-judicial { font-family: 'Merriweather', serif; }
-    .screen { display: none; }
-    .screen.active { display: flex; }
-    .progress-bar-fill { transition: width 0.1s linear; }
-    @keyframes pulse-magenta {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.98); }
+    :root {
+      --magenta-darkest: #2e081d;
+      --magenta-dark: #4c0519;
+      --magenta-primary: #881337;
+      --magenta-vivid: #be185d;
+      --magenta-light: #fdf2f8;
+      --magenta-border: #fbcfe8;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
     }
-    .timer-warning {
-      animation: pulse-magenta 1s infinite;
-      color: #f43f5e !important;
-      border-color: #f43f5e !important;
-      background-color: rgba(244, 63, 94, 0.15) !important;
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    body {
+      background-color: var(--magenta-light);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Regla crítica para cambio de pantallas */
+    .screen {
+      display: none !important;
+      width: 100%;
+      flex-grow: 1;
+    }
+    .screen.active {
+      display: flex !important;
+      flex-direction: column;
+    }
+
+    /* Barra académica superior */
+    .top-academic-banner {
+      background: linear-gradient(90deg, #4c0519, #881337, #4c0519);
+      color: #fce7f3;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #be185d;
+    }
+
+    /* Pantalla 0 y 1 Centradas */
+    .center-container {
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .card-box {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid var(--magenta-border);
+      box-shadow: 0 10px 25px -5px rgba(136, 19, 55, 0.15);
+      width: 100%;
+      max-width: 600px;
+      overflow: hidden;
+    }
+
+    .card-header-magenta {
+      background: linear-gradient(135deg, #4c0519, #881337, #be185d);
+      color: #ffffff;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .btn-magenta {
+      background: linear-gradient(90deg, #881337, #be185d);
+      color: #ffffff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      transition: opacity 0.2s;
+    }
+    .btn-magenta:hover { opacity: 0.95; }
+
+    /* Barra Estatal y Navegación */
+    .gov-header {
+      background-color: var(--magenta-dark);
+      color: #ffffff;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .gov-nav {
+      background-color: var(--magenta-darkest);
+      display: flex;
+      overflow-x: auto;
+      padding: 4px 12px;
+      gap: 8px;
+    }
+    .gov-nav::-webkit-scrollbar { display: none; }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: #fbcfe8;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-btn.active, .nav-btn:hover {
+      color: #ffffff;
+      border-bottom-color: var(--magenta-vivid);
+    }
+    .btn-search-tab {
+      margin-left: auto;
+      background: #be185d;
+      color: white;
+      border-radius: 6px;
+      padding: 6px 12px;
+    }
+
+    /* Cronómetro */
+    .timer-badge {
+      background: var(--magenta-darkest);
+      border: 1px solid #881337;
+      color: #fce7f3;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .timer-alert {
+      background: #e11d48 !important;
+      color: #ffffff !important;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Grid y Contenedores */
+    .content-area {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    @media (max-width: 850px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .white-card {
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid var(--magenta-border);
+      padding: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--magenta-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #fce7f3;
+      padding-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Tablas y Listas */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th {
+      background: var(--magenta-dark);
+      color: white;
+      text-align: left;
+      padding: 8px;
+      font-weight: 600;
+    }
+    td {
+      padding: 8px;
+      border-bottom: 1px solid #fce7f3;
+    }
+
+    .mobile-act-card {
+      display: none;
+      background: #ffffff;
+      border: 1px solid var(--magenta-border);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    @media (max-width: 768px) {
+      .table-desktop { display: none; }
+      .mobile-act-card { display: block; }
+    }
+
+    /* Modales */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(46, 8, 29, 0.7);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 2000;
+    }
+    .modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      max-width: 750px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      border: 1px solid var(--magenta-border);
+    }
+
+    /* Barras de progreso */
+    .progress-track {
+      background: #fce7f3;
+      height: 8px;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 100%;
+      margin: 15px 0;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #881337, #be185d);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
   </style>
 </head>
-<body class="bg-[#fdf2f8]/40 text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-pink-600 selection:text-white">
+<body>
 
-  <!-- AVISO ACADÉMICO SUPERIOR -->
-  <div class="bg-gradient-to-r from-rose-900 via-pink-800 to-rose-950 text-pink-100 text-[10px] sm:text-xs font-semibold px-3 py-1.5 text-center flex items-center justify-center gap-1.5 shadow-sm border-b border-pink-700/60 sticky top-0 z-50">
-    <i data-lucide="graduation-cap" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-300 flex-shrink-0"></i>
-    <span class="truncate tracking-wide">PORTAL ACADÉMICO UNIVERSITARIO - CSJ PUNO | EXPEDIENTE JUDICIAL ELECTRÓNICO (EJE)</span>
+  <!-- BANNER ACADÉMICO -->
+  <div class="top-academic-banner">
+    PORTAL DIDÁCTICO ACADÉMICO - CORTE SUPERIOR DE JUSTICIA DE PUNO (EXPEDIENTE EJE)
   </div>
 
-  <!-- CONTENEDOR PRINCIPAL -->
-  <main class="flex-grow flex flex-col w-full">
+  <main style="flex-grow: 1; display: flex; flex-direction: column;">
 
     <!-- ========================================== -->
     <!-- PANTALLA 0: BIENVENIDA                     -->
     <!-- ========================================== -->
-    <section id="screen-0" class="screen active flex-grow flex-col items-center justify-center p-3 sm:p-6">
-      <div class="max-w-xl w-full bg-white rounded-3xl shadow-2xl border border-pink-100 overflow-hidden my-auto">
-        <div class="bg-gradient-to-br from-[#4c0519] via-[#881337] to-[#be185d] text-white p-7 sm:p-10 text-center relative overflow-hidden">
-          <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-pink-500/20 rounded-full blur-2xl pointer-events-none"></div>
-          <div class="w-20 h-20 mx-auto mb-4 bg-white/10 rounded-2xl flex items-center justify-center p-3.5 backdrop-blur-md ring-1 ring-white/30 shadow-inner">
-            <i data-lucide="scale" class="w-12 h-12 text-pink-200"></i>
-          </div>
-          <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white drop-shadow-sm">PODER JUDICIAL DEL PERÚ</h1>
-          <p class="text-pink-200 font-medium text-xs sm:text-sm mt-1">Consulta de Expedientes Judiciales (CEJ / EJE)</p>
-          <div class="inline-block mt-3 px-3.5 py-1 bg-white/15 backdrop-blur-sm rounded-full text-[11px] text-pink-100 font-medium border border-white/20">
-            Corte Superior de Justicia de Puno – Sede Juliaca
-          </div>
+    <section id="screen-0" class="screen active center-container">
+      <div class="card-box">
+        <div class="card-header-magenta">
+          <svg style="width: 48px; height: 48px; margin-bottom: 8px;" viewBox="0 0 24 24" fill="none" stroke="#fbcfe8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>
+          </svg>
+          <h1 style="font-size: 20px; font-weight: 800;">PODER JUDICIAL DEL PERÚ</h1>
+          <p style="font-size: 13px; color: #fce7f3; margin-top: 4px;">Consulta de Expedientes Judiciales (CEJ / EJE)</p>
+          <span style="font-size: 11px; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 20px; margin-top: 8px; display: inline-block;">
+            Distrito Judicial de Puno – Sede Juliaca
+          </span>
         </div>
 
-        <div class="p-6 sm:p-8 space-y-5">
-          <div class="bg-pink-50/70 border-l-4 border-[#be185d] p-4 rounded-r-xl">
-            <h2 class="text-xs font-bold text-[#881337] uppercase tracking-wider mb-1">Módulo Digital de Consulta Jurisdiccional</h2>
-            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Examine fojas digitalizadas, resoluciones emitidas, cédulas electrónicas SINOE y recaudos probatorios de la causa laboral admitida.
+        <div style="padding: 24px;">
+          <div style="background: #fdf2f8; border-left: 4px solid #be185d; padding: 12px; border-radius: 4px; margin-bottom: 16px;">
+            <p style="font-size: 12px; color: #4c0519; line-height: 1.5;">
+              Acceso institucional para cátedra universitaria. Permite revisar el cuaderno laboral digitalizado, autos resolutivos y medios probatorios en tiempo real.
             </p>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600">
-            <div class="flex items-center gap-2.5 bg-slate-50/90 p-3 rounded-xl border border-pink-100/60">
-              <div class="p-1.5 rounded-lg bg-pink-100 text-pink-700">
-                <i data-lucide="shield-check" class="w-4 h-4"></i>
-              </div>
-              <span>Validez probatoria con firma digital certificada.</span>
-            </div>
-            <div class="flex items-center gap-2.5 bg-slate-50/90 p-3 rounded-xl border border-pink-100/60">
-              <div class="p-1.5 rounded-lg bg-pink-100 text-pink-700">
-                <i data-lucide="clock" class="w-4 h-4"></i>
-              </div>
-              <span>Seguridad SINOE con sesión de 7 minutos.</span>
-            </div>
-          </div>
-
-          <button onclick="goToScreen1()" class="w-full bg-gradient-to-r from-[#881337] via-[#9f1239] to-[#be185d] hover:brightness-110 text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg shadow-pink-900/20 transition-all flex items-center justify-center gap-2 text-sm group">
-            <span>Acceder al Expediente Electrónico</span>
-            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+          <button onclick="goToScreen1()" class="btn-magenta">
+            <span>Ingresar al Sistema Jurisdiccional</span>
+            <svg style="width: 16px; height: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </button>
         </div>
       </div>
     </section>
 
     <!-- ========================================== -->
-    <!-- PANTALLA 1: CARGA DE TRANSICIÓN AL PORTAL  -->
+    <!-- PANTALLA 1: CARGA AL PORTAL                -->
     <!-- ========================================== -->
-    <section id="screen-1" class="screen flex-grow flex-col items-center justify-center p-4">
-      <div class="max-w-xs sm:max-w-sm w-full text-center space-y-6">
-        <div class="relative w-20 h-20 mx-auto">
-          <div class="absolute inset-0 rounded-full border-4 border-pink-100"></div>
-          <div class="absolute inset-0 rounded-full border-4 border-[#be185d] border-t-transparent animate-spin"></div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <i data-lucide="scale" class="w-8 h-8 text-[#9f1239] animate-pulse"></i>
-          </div>
+    <section id="screen-1" class="screen center-container">
+      <div style="max-w: 380px; width: 100%; text-align: center;">
+        <svg style="width: 44px; height: 44px; color: #881337; margin-bottom: 12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <h3 style="font-size: 16px; font-weight: 700; color: #4c0519;">Conectando con la Sede Juliaca</h3>
+        <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Validando credenciales en el Sistema Integrado Judicial (SIJ)...</p>
+        <div class="progress-track">
+          <div id="p1-bar" class="progress-bar"></div>
         </div>
-        <div>
-          <h3 class="text-base font-bold text-slate-900">Estableciendo Conexión Segura con el SIJ</h3>
-          <p class="text-xs text-slate-500 mt-1">Corte Superior de Justicia de Puno</p>
-        </div>
-        <div class="w-full bg-pink-100/80 h-2 rounded-full overflow-hidden shadow-inner">
-          <div id="p1-progress" class="bg-gradient-to-r from-[#881337] to-[#be185d] h-full w-0 progress-bar-fill"></div>
-        </div>
-        <p class="text-[11px] text-slate-400">Verificando certificados criptográficos y credenciales...</p>
       </div>
     </section>
 
     <!-- ========================================== -->
     <!-- PANTALLA 2: PORTAL ESTATAL Y BÚSQUEDA       -->
     <!-- ========================================== -->
-    <section id="screen-2" class="screen flex-grow flex-col">
-      <!-- Cabecera Superior Estatal en Magenta Profundo -->
-      <header class="bg-[#4c0519] text-white shadow-lg border-b border-pink-800">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2.5">
-            <div class="bg-white/10 p-2 rounded-xl flex-shrink-0 border border-white/10">
-              <i data-lucide="landmark" class="w-5 h-5 text-pink-300"></i>
+    <section id="screen-2" class="screen">
+      <!-- Cabecera Institucional -->
+      <div class="gov-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg style="width: 22px; height: 22px; color: #fbcfe8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 10v11"/><path d="M19 10v11"/><path d="M9 10v11"/><path d="M15 10v11"/><path d="M12 2 2 7h20L12 2z"/></svg>
+          <div>
+            <div style="font-size: 9px; font-weight: 800; color: #fbcfe8; letter-spacing: 1px;">PODER JUDICIAL DEL PERÚ</div>
+            <div style="font-size: 13px; font-weight: 700;">CEJ Electrónico Puno</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div id="session-badge" class="timer-badge">
+            <span style="font-size: 11px;">Sesión:</span>
+            <strong id="session-timer">07:00</strong>
+          </div>
+          <button onclick="resetTimer()" style="background: none; border: 1px solid #881337; color: white; padding: 4px 8px; border-radius: 6px; cursor: pointer;">↻</button>
+        </div>
+      </div>
+
+      <!-- Menú de Navegación -->
+      <div class="gov-nav">
+        <button onclick="showInfo('inicio')" class="nav-btn active">Inicio</button>
+        <button onclick="showInfo('mision')" class="nav-btn">Misión</button>
+        <button onclick="showInfo('vision')" class="nav-btn">Visión</button>
+        <button onclick="showInfo('transparencia')" class="nav-btn">Transparencia</button>
+        <button onclick="showInfo('contactanos')" class="nav-btn">Contáctanos</button>
+        <button onclick="activateSearch()" class="nav-btn btn-search-tab">🔍 Búsqueda de Expedientes</button>
+      </div>
+
+      <!-- Área de Contenido Central -->
+      <div class="content-area" style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+        
+        <!-- VISTA POR DEFECTO: ILUSTRACIÓN DE TEMIS -->
+        <div id="temis-view" class="white-card" style="text-align: center; padding: 36px 16px;">
+          <svg style="width: 140px; height: 140px; margin: 0 auto 12px; display: block;" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="90" fill="#fdf2f8" stroke="#be185d" stroke-width="3" stroke-dasharray="4 2"/>
+            <path d="M100 25 L100 160" stroke="#881337" stroke-width="4" stroke-linecap="round"/>
+            <path d="M80 160 L120 160" stroke="#881337" stroke-width="6" stroke-linecap="round"/>
+            <path d="M50 55 L150 55" stroke="#be185d" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="100" cy="55" r="6" fill="#881337"/>
+            <path d="M50 55 L35 95" stroke="#9f1239" stroke-width="2"/><path d="M50 55 L65 95" stroke="#9f1239" stroke-width="2"/>
+            <path d="M25 95 Q50 115 75 95 Z" fill="#fbcfe8"/>
+            <path d="M150 55 L135 95" stroke="#9f1239" stroke-width="2"/><path d="M150 55 L165 95" stroke="#9f1239" stroke-width="2"/>
+            <path d="M125 95 Q150 115 175 95 Z" fill="#fbcfe8"/>
+            <path d="M85 40 Q100 35 115 40" stroke="#4c0519" stroke-width="3"/>
+          </svg>
+          <h2 style="font-size: 18px; color: #4c0519; font-weight: 800;">Jurisdicción Laboral - Distrito Judicial Puno</h2>
+          <p style="font-size: 13px; color: #64748b; max-width: 440px; margin: 8px auto 16px;">
+            Haga clic en el botón superior o en el acceso rápido para desplegar el formulario con CAPTCHA y consultar la causa.
+          </p>
+          <button onclick="activateSearch()" class="btn-magenta" style="max-width: 250px; margin: 0 auto;">
+            Consultar Expediente
+          </button>
+        </div>
+
+        <!-- VISTA DE INFORMACIÓN INSTITUCIONAL -->
+        <div id="info-view" class="white-card" style="display: none;">
+          <h3 id="info-title" style="color: var(--magenta-primary); margin-bottom: 8px; font-size: 16px;"></h3>
+          <p id="info-desc" style="font-size: 13px; color: #475569; line-height: 1.6;"></p>
+          <button onclick="hideInfo()" style="margin-top: 12px; background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">Volver</button>
+        </div>
+
+        <!-- VISTA DE FORMULARIO CON CAPTCHA -->
+        <div id="search-view" class="white-card" style="display: none; max-width: 650px; margin: 0 auto; width: 100%;">
+          <div style="background: #4c0519; color: white; padding: 12px; border-radius: 8px 8px 0 0; margin: -16px -16px 16px; display: flex; justify-content: space-between;">
+            <strong style="font-size: 13px;">Búsqueda de Causas Judiciales</strong>
+            <button onclick="cancelSearch()" style="background: none; border: none; color: #fbcfe8; cursor: pointer;">✕</button>
+          </div>
+
+          <!-- PASO 1: CAPTCHA -->
+          <div id="captcha-step">
+            <div style="background: #fdf2f8; border: 1px solid #fbcfe8; padding: 10px; border-radius: 8px; font-size: 12px; color: #881337; margin-bottom: 12px;">
+              Seguridad judicial: Ingrese el código alfanumérico para desbloquear los datos del expediente.
             </div>
-            <div>
-              <div class="text-[10px] font-bold text-pink-300 uppercase tracking-widest leading-none">PODER JUDICIAL DEL PERÚ</div>
-              <div class="text-xs sm:text-base font-bold leading-tight truncate">CEJ Judicial Puno (Sede Juliaca)</div>
-            </div>
+            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+              <div id="captcha-txt" style="background: #2e081d; color: #fbcfe8; font-family: monospace; font-size: 22px; font-weight: 800; letter-spacing: 5px; padding: 8px 16px; border-radius: 8px; text-decoration: line-through;">
+                7B8K2
+              </div>
+              <button onclick="makeCaptcha()" style="padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; background: white;">↻</button>
+              <input

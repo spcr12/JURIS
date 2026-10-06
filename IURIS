@@ -417,4 +417,458 @@
                 7B8K2
               </div>
               <button onclick="makeCaptcha()" style="padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; background: white;">↻</button>
-              <input
+              <input type="text" id="captcha-in" placeholder="Código" style="flex-grow: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; text-transform: uppercase; font-weight: bold;">
+            </div>
+            <button onclick="checkCaptcha()" class="btn-magenta">Validar Código</button>
+            <div id="captcha-err" style="display: none; color: #e11d48; font-size: 12px; margin-top: 6px; text-align: center;">Código incorrecto. Vuelva a intentarlo.</div>
+          </div>
+
+          <!-- PASO 2: FORMULARIO -->
+          <div id="form-step" style="display: none;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 12px;">
+              <div>
+                <label style="font-size: 11px; font-weight: bold; color: #64748b;">Correlativo</label>
+                <input type="text" id="in-exp" value="00174" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center;">
+              </div>
+              <div>
+                <label style="font-size: 11px; font-weight: bold; color: #64748b;">Año</label>
+                <input type="text" value="2019" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center;">
+              </div>
+              <div>
+                <label style="font-size: 11px; font-weight: bold; color: #64748b;">Cuaderno</label>
+                <input type="text" value="0" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center;">
+              </div>
+              <div>
+                <label style="font-size: 11px; font-weight: bold; color: #64748b;">Distrito</label>
+                <input type="text" value="2111" style="width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: center;">
+              </div>
+            </div>
+
+            <div style="background: #fdf2f8; border: 1px solid #fbcfe8; padding: 8px 12px; border-radius: 6px; font-size: 12px; margin-bottom: 12px;">
+              Caso de estudio listo: <strong>00174-2019-0-2111-JR-LA-02</strong> (Supo Quispe vs EsSalud)
+            </div>
+
+            <button onclick="goToScreen3()" class="btn-magenta">
+              Consultar Expediente Electrónico
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PANTALLA 3: CARGA DE CONSULTA A BASE SIJ   -->
+    <!-- ========================================== -->
+    <section id="screen-3" class="screen center-container">
+      <div style="max-width: 380px; width: 100%; text-align: center;">
+        <svg style="width: 44px; height: 44px; color: #be185d; margin-bottom: 12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/>
+        </svg>
+        <h3 style="font-size: 16px; font-weight: 700; color: #4c0519;">Indexando Expediente Electrónico</h3>
+        <p style="font-size: 12px; color: #64748b; margin-top: 4px;">Recuperando foliatura, resoluciones y pruebas...</p>
+        <div class="progress-track">
+          <div id="p3-bar" class="progress-bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- PANTALLA 4: VISOR INTEGRAL DEL EXPEDIENTE  -->
+    <!-- ========================================== -->
+    <section id="screen-4" class="screen">
+      <!-- Barra Superior del Expediente -->
+      <div style="background: #4c0519; color: white; padding: 12px 16px; border-bottom: 2px solid #be185d;">
+        <div class="content-area" style="padding: 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="font-size: 10px; color: #fbcfe8; font-weight: 700;">EXPEDIENTE JUDICIAL ELECTRÓNICO (EJE)</div>
+            <div style="font-size: 16px; font-weight: 800; font-family: monospace;">00174-2019-0-2111-JR-LA-02</div>
+          </div>
+          <button onclick="returnToSearch()" style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+            ← Nueva Búsqueda
+          </button>
+        </div>
+      </div>
+
+      <div class="content-area" style="padding-top: 16px; padding-bottom: 24px;">
+        
+        <!-- Ficha Técnica -->
+        <div class="white-card">
+          <div class="card-title">1. Ficha Técnica General</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 12px;">
+            <div><span style="color: #64748b; display: block;">Distrito / Sede:</span> <strong>Puno / San Román – Juliaca</strong></div>
+            <div><span style="color: #64748b; display: block;">Juzgado:</span> <strong>Juzgado de Trabajo – Zona Norte</strong></div>
+            <div><span style="color: #64748b; display: block;">Juez:</span> <strong>Huamán Romero, Gonzalo Víctor</strong></div>
+            <div><span style="color: #64748b; display: block;">Secretaria:</span> <strong>Carlos Villán, Rosario</strong></div>
+            <div><span style="color: #64748b; display: block;">Ingreso:</span> <strong>26/06/2019 – 11:31:38</strong></div>
+            <div><span style="color: #64748b; display: block;">Materia:</span> <strong style="color: #881337;">Desnaturalización de Contrato (Ley 26636)</strong></div>
+          </div>
+        </div>
+
+        <!-- Partes Procesales y Pretensión -->
+        <div class="grid-2">
+          <div class="white-card">
+            <div class="card-title">2. Sujetos Procesales</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+              <div style="background: #fdf2f8; border: 1px solid #fbcfe8; padding: 8px; border-radius: 6px;">
+                <span style="color: #be185d; font-weight: 800; font-size: 10px;">DEMANDANTE (DNI 02167445)</span>
+                <div style="font-weight: bold;">Andrés Leonidas Supo Quispe</div>
+                <div style="font-size: 11px; color: #64748b;">Abog. Lino Larico (Reg. CAP 47) | SINOE: 60375</div>
+              </div>
+              <div style="background: #fff1f2; border: 1px solid #fecdd3; padding: 8px; border-radius: 6px;">
+                <span style="color: #e11d48; font-weight: 800; font-size: 10px;">DEMANDADA (RUC 20131257750)</span>
+                <div style="font-weight: bold;">EsSalud Red Asistencial Juliaca</div>
+                <div style="font-size: 11px; color: #64748b;">Apoderado: Hernán López Alférez | SINOE: 59629</div>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 6px; font-size: 11px;">
+                <strong>Tercero:</strong> Servicios Integrados de Limpieza S.A. – SILSA (RUC 20100362598)
+              </div>
+            </div>
+          </div>
+
+          <div class="white-card">
+            <div class="card-title">3. Petitorio</div>
+            <div style="font-size: 12px; line-height: 1.5; color: #334155;">
+              <p><strong>Principal:</strong> Declaración de desnaturalización de la intermediación laboral prestada a EsSalud.</p>
+              <p style="margin-top: 6px;"><strong>Accesoria:</strong> Inclusión en planillas a plazo indeterminado (D. Leg. 728) desde el 01/12/1996 como Almacenero.</p>
+              <div style="background: #fdf2f8; padding: 6px 10px; border-radius: 6px; font-size: 11px; color: #881337; margin-top: 8px;">
+                Principio: <strong>Primacía de la Realidad</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Actuados Procesales -->
+        <div class="white-card" style="margin-top: 16px;">
+          <div class="card-title">4. Actuados Procesales Cronológicos (12 Actuados)</div>
+          
+          <!-- Vista Desktop -->
+          <div class="table-desktop">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 40px; text-align: center;">N°</th>
+                  <th style="width: 90px;">Fojas</th>
+                  <th style="width: 90px;">Fecha</th>
+                  <th style="width: 170px;">Tipo de Actuado</th>
+                  <th>Descripción</th>
+                  <th style="width: 90px; text-align: center;">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="timeline-desktop-rows"></tbody>
+            </table>
+          </div>
+
+          <!-- Vista Móvil -->
+          <div id="timeline-mobile-cards"></div>
+        </div>
+
+        <!-- 5. Medios Probatorios -->
+        <div class="white-card" style="margin-top: 16px;">
+          <div class="card-title">5. Medios Probatorios Ofrecidos (Anexos 1-A al 1-U)</div>
+          <div id="probatory-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px;"></div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL DE VISUALIZACIÓN DE RESOLUCIONES / ESCRITOS -->
+  <div id="modal-doc" class="modal-overlay">
+    <div class="modal-box">
+      <div style="background: #4c0519; color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h4 id="doc-title" style="font-size: 14px; font-weight: bold;">Documento Judicial</h4>
+          <span id="doc-sub" style="font-size: 11px; color: #fbcfe8;">Exp. 00174-2019-0-2111-JR-LA-02</span>
+        </div>
+        <button onclick="closeDocModal()" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">✕</button>
+      </div>
+      <div id="doc-body" style="padding: 20px; font-size: 13px; line-height: 1.6; color: #1e293b; font-family: Georgia, serif;"></div>
+      <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 10px 16px; text-align: right;">
+        <button onclick="closeDocModal()" style="background: #475569; color: white; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EXPIRACIÓN (7 MINUTOS) -->
+  <div id="modal-timeout" class="modal-overlay">
+    <div class="modal-box" style="max-width: 360px; text-align: center; padding: 24px;">
+      <h3 style="color: #881337; font-size: 18px; margin-bottom: 8px;">Sesión Caducada</h3>
+      <p style="font-size: 12px; color: #64748b; margin-bottom: 16px;">Por seguridad institucional, su sesión de 7 minutos ha finalizado.</p>
+      <button onclick="forceRedirect()" class="btn-magenta">Aceptar e Ir al Inicio</button>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <footer style="background: #2e081d; color: #fbcfe8; font-size: 11px; text-align: center; padding: 12px;">
+    Poder Judicial del Perú - Corte Superior de Justicia de Puno (Sede Juliaca) | Simulador Académico EJE
+  </footer>
+
+  <!-- LÓGICA JAVASCRIPT ROBUSTA (SIN DEPENDENCIAS) -->
+  <script>
+    // BASE DE DATOS DEL EXPEDIENTE
+    var ACTS = [
+      { n: 1, f: "Fjs. 1-2", d: "26/06/2019", t: "Cargo / Carátula", des: "Carátula oficial CDG 00174-2019-0-2111-JR-LA-02 en Mesa de Partes Única.", b: "<strong>MESA DE PARTES DE JULIACA</strong><br>Código: 22019001742111334000038<br>Ingreso: 26/06/2019 - Especialista: Iván Palomino Jara.<br>Demandante: Supo Quispe Andrés Leonidas vs EsSalud." },
+      { n: 2, f: "Fjs. 2-26", d: "26/06/2019", t: "Escrito N° 01 (Demanda)", des: "Demanda laboral ordinaria de desnaturalización e inclusión en planillas 728.", b: "<strong>SEÑOR JUEZ DEL JUZGADO LABORAL:</strong><br>Andrés Leonidas Supo Quispe solicita se declare la desnaturalización de su contrato civil/intermediación mantenida fraudulentamente con SILSA y se ordene su incorporación como Almacenero en EsSalud bajo el D. Leg. 728." },
+      { n: 3, f: "Fjs. 26-96", d: "26/06/2019", t: "Medios Probatorios", des: "70 fojas con recaudos: constancias SILSA, CAP/MOF, actas inspectivas 226 y 567.", b: "<strong>RECAUDOS INSTRUMENTALES ADMITIDOS:</strong><br>• Constancia SILSA 1996 a 2018.<br>• Actas inspectivas de trabajo de Juliaca.<br>• Cuadro de Asignación de Personal (CAP) y MOF de EsSalud." },
+      { n: 4, f: "Fjs. 97", d: "11/07/2019", t: "Redistribución", des: "Pasa al Juzgado de Trabajo Zona Norte de Juliaca por Res. Adm. N° 232-2019-CE-PJ.", b: "Derivación por especialidad laboral conforme a disposición del Consejo Ejecutivo del Poder Judicial." },
+      { n: 5, f: "Fjs. 98", d: "12/07/2019", t: "Razón de Secretaría", des: "Secretaria Rosario Carlos Villán asume la tramitación del expediente.", b: "Doy cuenta de asumir funciones de especialista legal de causa. Dra. Rosario Carlos Villán." },
+      { n: 6, f: "Fjs. 99", d: "13/08/2019", t: "Resolución N° 01", des: "Admisorio provisional: concede 3 días para pronunciarse sobre SILSA.", b: "<strong>RESOLUCIÓN NRO. 01:</strong><br>Juliaca, 13 de agosto de 2019.<br>SE RESUELVE: Declarar ADMISIBLE PROVISIONALMENTE la demanda y conceder 3 días al accionante para pronunciarse sobre SILSA. Juez: Huamán Romero." },
+      { n: 7, f: "Fjs. 100", d: "15/08/2019", t: "Cédula Electrónica", des: "Notificación SINOE N° 6475-2019 al actor (Casilla 60375).", b: "Diligenciada electrónicamente en casilla SINOE del demandante." },
+      { n: 8, f: "Fjs. 101-104", d: "21/08/2019", t: "Escrito N° 02", des: "Subsanación: se fundamenta que el desvío funcional y mando lo ejerció EsSalud.", b: "El actor absuelve traslado señalando que el provecho directo del servicio y el poder de dirección fue ejercido por la usuaria EsSalud." },
+      { n: 9, f: "Fjs. 105", d: "28/08/2019", t: "Resolución N° 02", des: "Admite formalmente la demanda ordinaria laboral y traslada por 10 días a EsSalud.", b: "<strong>RESOLUCIÓN NRO. 02:</strong><br>Juliaca, 28 de agosto de 2019.<br>SE RESUELVE: Tener por subsanada la demanda y ADMITIR A TRÁMITE en la vía ordinaria laboral. Córrase traslado por 10 días a EsSalud." },
+      { n: 10, f: "Fjs. 106", d: "05/09/2019", t: "Cédula Electrónica", des: "Notificación N° 63800-2019 al demandante con la Resolución N° 02.", b: "Notificada válidamente al actor." },
+      { n: 11, f: "Fjs. 107", d: "10/09/2019", t: "Cédula Física", des: "Emplazamiento a EsSalud en Av. Santos Chocano S/N, La Capilla, Juliaca.", b: "Notificación por cédula física con copias completas de ley." },
+      { n: 12, f: "Fjs. 108-124+", d: "25/09/2019", t: "Contestación", des: "EsSalud contesta mediante apoderado Hernán López Alférez pidiendo infundada.", b: "EsSalud deduce excepciones y contesta la demanda alegando falta de vacante en el CAP y que el contrato era de la empresa SILSA." }
+    ];
+
+    var RECS = [
+      { id: "1-A", t: "Copia Legalizada DNI", d: "Identidad del actor Andrés Supo Quispe." },
+      { id: "1-B", t: "Constancia SILSA 2018", d: "Servicios continuos prestados desde 1996." },
+      { id: "1-C", t: "CAP EsSalud Juliaca", d: "Plazas estructurales de la Unidad de Almacenes." },
+      { id: "1-D", t: "MOF EsSalud Juliaca", d: "Funciones y atribuciones de Almacenero." },
+      { id: "1-E", t: "Contratos de Servicios", d: "Bases de contratación con la contratista SILSA." },
+      { id: "1-F", t: "Padrón Censo Inspectivo", d: "Verificación laboral presencial del Ministerio de Trabajo." },
+      { id: "1-G", t: "Acta Infracción 226-2013", d: "Multa impuesta por intermediación laboral fraudulenta." },
+      { id: "1-H", t: "Requerimiento 567-2013", d: "Orden formal inspectiva de incorporar a planillas." },
+      { id: "1-I", t: "Informe OCI-ESSALUD", d: "Control interno advierte labores en almacén." },
+      { id: "1-LL", t: "Memos Rotación 2013", d: "Disposiciones ante las visitas de inspección laboral." },
+      { id: "1-Ñ", t: "Capacitaciones SAP R/3", d: "Cursos institucionales dados por EsSalud al demandante." },
+      { id: "1-Q", t: "Cartas de Felicitación", d: "Reconocimientos de jefatura de almacenes." },
+      { id: "1-U", t: "Sentencia Exp. 0130-2014", d: "Caso judicial idéntico con sentencia estimatoria." }
+    ];
+
+    // CONTROL DE PANTALLAS
+    function switchScreen(id) {
+      var scs = document.querySelectorAll('.screen');
+      for (var i = 0; i < scs.length; i++) {
+        scs[i].classList.remove('active');
+      }
+      var target = document.getElementById(id);
+      if (target) target.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // FLUJO PANTALLA 0 -> 1 -> 2
+    function goToScreen1() {
+      switchScreen('screen-1');
+      startSessionTimer();
+      var p = 0;
+      var bar = document.getElementById('p1-bar');
+      bar.style.width = '0%';
+      var iv = setInterval(function() {
+        p += 15;
+        bar.style.width = p + '%';
+        if (p >= 100) {
+          clearInterval(iv);
+          setTimeout(function() { switchScreen('screen-2'); }, 150);
+        }
+      }, 50);
+    }
+
+    // FLUJO PANTALLA 2 (PORTAL Y CAPTCHA)
+    function showInfo(topic) {
+      document.getElementById('temis-view').style.display = 'none';
+      document.getElementById('search-view').style.display = 'none';
+      var v = document.getElementById('info-view');
+      v.style.display = 'block';
+
+      var t = document.getElementById('info-title');
+      var d = document.getElementById('info-desc');
+      if (topic === 'inicio') {
+        hideInfo();
+      } else if (topic === 'mision') {
+        t.innerText = "Misión Institucional";
+        d.innerText = "Administrar Justicia a través de sus órganos jurisdiccionales, garantizando la seguridad jurídica, la tutela jurisdiccional efectiva y el debido proceso.";
+      } else if (topic === 'vision') {
+        t.innerText = "Visión del Poder Judicial";
+        d.innerText = "Poder del Estado confiable, transparente y eficiente, con estándares digitales y servicio oportuno al justiciable.";
+      } else if (topic === 'transparencia') {
+        t.innerText = "Transparencia Judicial";
+        d.innerText = "Portal de acceso público a presupuestos, personal judicial y contrataciones de la Corte Superior de Justicia de Puno.";
+      } else {
+        t.innerText = "Atención al Ciudadano";
+        d.innerText = "Sede Central Juliaca: Jr. Apurímac / Pumacahua. Módulo Laboral: Jr. Mariano Núñez N° 139. Central Telefónica: (051) 507000.";
+      }
+    }
+
+    function hideInfo() {
+      document.getElementById('info-view').style.display = 'none';
+      document.getElementById('search-view').style.display = 'none';
+      document.getElementById('temis-view').style.display = 'block';
+    }
+
+    function activateSearch() {
+      document.getElementById('temis-view').style.display = 'none';
+      document.getElementById('info-view').style.display = 'none';
+      document.getElementById('search-view').style.display = 'block';
+      makeCaptcha();
+    }
+
+    function cancelSearch() {
+      hideInfo();
+    }
+
+    var realCaptcha = "";
+    function makeCaptcha() {
+      var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      var code = "";
+      for (var i = 0; i < 5; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      realCaptcha = code;
+      document.getElementById('captcha-txt').innerText = code;
+      document.getElementById('captcha-in').value = "";
+      document.getElementById('captcha-err').style.display = 'none';
+    }
+
+    function checkCaptcha() {
+      var userVal = document.getElementById('captcha-in').value.trim().toUpperCase();
+      if (userVal === realCaptcha) {
+        document.getElementById('captcha-step').style.display = 'none';
+        document.getElementById('form-step').style.display = 'block';
+      } else {
+        document.getElementById('captcha-err').style.display = 'block';
+        makeCaptcha();
+      }
+    }
+
+    // FLUJO PANTALLA 2 -> 3 -> 4
+    function goToScreen3() {
+      switchScreen('screen-3');
+      var p = 0;
+      var bar = document.getElementById('p3-bar');
+      bar.style.width = '0%';
+      var iv = setInterval(function() {
+        p += 15;
+        bar.style.width = p + '%';
+        if (p >= 100) {
+          clearInterval(iv);
+          setTimeout(function() {
+            renderCase();
+            switchScreen('screen-4');
+          }, 150);
+        }
+      }, 50);
+    }
+
+    function returnToSearch() {
+      switchScreen('screen-2');
+      activateSearch();
+    }
+
+    // RENDERIZAR ACTUADOS Y MEDIOS DE PRUEBA
+    function renderCase() {
+      // 1. Tabla Desktop
+      var dRows = document.getElementById('timeline-desktop-rows');
+      dRows.innerHTML = '';
+      for (var i = 0; i < ACTS.length; i++) {
+        var a = ACTS[i];
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td style="text-align:center; font-weight:bold;">' + (a.n < 10 ? '0' + a.n : a.n) + '</td>' +
+                       '<td style="font-family:monospace;">' + a.f + '</td>' +
+                       '<td>' + a.d + '</td>' +
+                       '<td style="font-weight:bold; color:#881337;">' + a.t + '</td>' +
+                       '<td style="font-size:11px; color:#475569;">' + a.des + '</td>' +
+                       '<td style="text-align:center;"><button onclick="viewDoc(' + a.n + ')" style="background:#881337; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:11px; cursor:pointer;">Ver Fojas</button></td>';
+        dRows.appendChild(tr);
+      }
+
+      // 2. Tarjetas Móviles
+      var mCards = document.getElementById('timeline-mobile-cards');
+      mCards.innerHTML = '';
+      for (var j = 0; j < ACTS.length; j++) {
+        var m = ACTS[j];
+        var div = document.createElement('div');
+        div.className = 'mobile-act-card';
+        div.innerHTML = '<div style="display:flex; justify-content:space-between; font-size:10px; margin-bottom:4px;">' +
+                        '<span style="background:#fce7f3; color:#881337; font-weight:bold; padding:2px 6px; border-radius:4px;">#' + m.n + '</span>' +
+                        '<span>' + m.f + '</span>' +
+                        '<span style="color:#64748b;">' + m.d + '</span>' +
+                        '</div>' +
+                        '<div style="font-weight:bold; font-size:12px; color:#881337;">' + m.t + '</div>' +
+                        '<div style="font-size:11px; color:#475569; margin:4px 0 8px;">' + m.des + '</div>' +
+                        '<button onclick="viewDoc(' + m.n + ')" class="btn-magenta" style="padding:6px; font-size:11px;">Ver Fojas Digitalizadas</button>';
+        mCards.appendChild(div);
+      }
+
+      // 3. Medios probatorios
+      var pGrid = document.getElementById('probatory-grid');
+      pGrid.innerHTML = '';
+      for (var k = 0; k < RECS.length; k++) {
+        var r = RECS[k];
+        var c = document.createElement('div');
+        c.style = "background:#fdf2f8; border:1px solid #fbcfe8; padding:8px; border-radius:8px; font-size:11px;";
+        c.innerHTML = '<span style="background:#881337; color:white; font-size:9px; padding:1px 4px; border-radius:3px; font-weight:bold;">' + r.id + '</span> ' +
+                      '<strong>' + r.t + '</strong>' +
+                      '<p style="color:#64748b; font-size:10px; margin-top:2px;">' + r.d + '</p>';
+        pGrid.appendChild(c);
+      }
+    }
+
+    // MODAL VISOR DE DOCUMENTO
+    function viewDoc(num) {
+      var item = null;
+      for (var i = 0; i < ACTS.length; i++) {
+        if (ACTS[i].n === num) { item = ACTS[i]; break; }
+      }
+      if (!item) return;
+
+      document.getElementById('doc-title').innerText = item.t;
+      document.getElementById('doc-sub').innerText = item.f + " | Fecha: " + item.d;
+      document.getElementById('doc-body').innerHTML = item.b;
+      document.getElementById('modal-doc').style.display = 'flex';
+    }
+
+    function closeDocModal() {
+      document.getElementById('modal-doc').style.display = 'none';
+    }
+
+    // TEMPORIZADOR DE 7 MINUTOS (420 SEGUNDOS)
+    var timeLeft = 420;
+    var timerInt = null;
+
+    function startSessionTimer() {
+      if (timerInt) clearInterval(timerInt);
+      timeLeft = 420;
+      updateTimer();
+      timerInt = setInterval(function() {
+        timeLeft--;
+        updateTimer();
+        if (timeLeft <= 0) {
+          clearInterval(timerInt);
+          document.getElementById('modal-timeout').style.display = 'flex';
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      timeLeft = 420;
+      updateTimer();
+    }
+
+    function updateTimer() {
+      var m = Math.floor(timeLeft / 60);
+      var s = timeLeft % 60;
+      var str = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+      var el = document.getElementById('session-timer');
+      var bg = document.getElementById('session-badge');
+      if (el) el.innerText = str;
+      if (timeLeft <= 60 && bg) {
+        bg.classList.add('timer-alert');
+      } else if (bg) {
+        bg.classList.remove('timer-alert');
+      }
+    }
+
+    function forceRedirect() {
+      document.getElementById('modal-timeout').style.display = 'none';
+      document.getElementById('captcha-step').style.display = 'block';
+      document.getElementById('form-step').style.display = 'none';
+      cancelSearch();
+      switchScreen('screen-0');
+    }
+  </script>
+</body>
+</html>
